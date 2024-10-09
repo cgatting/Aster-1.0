@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Flash</title>
+    <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body>
+    <audio id="newsAudio" allow = "autoplay">
+        <source id="audioSource" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <script>
+        async function playNewsReport() {
+            try {
+                const audioFile = await eel.get_news_audio()();
+                console.log("Audio file retrieved successfully.");
+                var audio = document.getElementById('newsAudio');
+                var source = document.getElementById('audioSource');
+                source.src = audioFile;
+                audio.load();
+                audio.play().catch(error => {
+                    console.error("Autoplay prevented: trying to play after user gesture.", error);
+                });
+            } catch (error) {
+                console.error("Error playing news report:", error);
+            }
+        }
+
+        // Trigger the function once the page is fully loaded
+        window.onload = () => {
+            setTimeout(playNewsReport, 1000); // Delay to bypass autoplay restrictions
+        };
+    </script>
+</body>
+</html>
